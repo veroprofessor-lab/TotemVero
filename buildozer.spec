@@ -21,6 +21,8 @@ android.permissions = READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE, MANAGE_EXTE
 
 # (int) Target Android API (33 ou 34 atende a grande maioria das TV-Boxes atuais)
 android.api = 34
+# (str) Android NDK version to use
+android.ndk = 26b
 
 # (bool) If True, then skip trying to update the Android sdk
 # Useful if you are packaging offline or wish to skip standard updates
