@@ -25,15 +25,7 @@ jobs:
         sudo apt install -y git zip unzip python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libssl-dev cmake libffi-dev libgomp1
         pip3 install --user buildozer
 
-    - name: Aceitar Licencas do Android SDK
-      run: |
-        # Instala as ferramentas de linha de comando do Android para aceitar as licenças automaticamente
-        mkdir -p ~/.android
-        touch ~/.android/repositories.cfg
-        # Força o sim (yes) para todas as perguntas de licença do SDK
-        yes | sdkmanager --licenses || true
-
     - name: Compilar APK
       run: |
-        # Passamos o sim (yes) direto para o comando do buildozer aceitar as licenças do SDK que ele vai baixar
+        # O comando "yes" fica mandando "y" sem parar para aceitar todas as licenças do Android SDK que o Buildozer vai baixar
         yes | ~/.local/bin/buildozer -v android debug
