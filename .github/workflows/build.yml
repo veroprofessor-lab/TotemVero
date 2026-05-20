@@ -27,5 +27,5 @@ jobs:
 
     - name: Compilar APK
       run: |
-        # O comando "yes" fica mandando "y" sem parar para aceitar todas as licenças do Android SDK que o Buildozer vai baixar
-        yes | ~/.local/bin/buildozer -v android debug
+        # Executa o Buildozer puro e direto
+        ~/.local/bin/buildozer -v android debug
