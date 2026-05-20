@@ -1,0 +1,36 @@
+name: Compilar APK do Totem
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Baixar Codigo do Repositorio
+      uses: actions/checkout@v4
+
+    - name: Configurar Cache do Buildozer
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.buildozer
+          .buildozer
+        key: ${{ runner.os }}-buildozer-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-buildozer-
+
+    - name: Compilar com Buildozer (Nuvem)
+      uses: ArtemGovorov/buildozer-action@v1
+      with:
+        command: buildozer -v android debug
+        repository_root: .
+
+    - name: Upload do APK Pronto
+      uses: actions/upload-artifact@v4
+      with:
+        name: TotemApp-APK
+        path: bin/*.apk
