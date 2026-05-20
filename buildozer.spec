@@ -8,17 +8,21 @@ package.domain = org.amendoim
 # (list) Application requirements
 # ⚠️ CRUCIAL: Adicionar ffpyplayer e os componentes sdl2 necessários para vídeo
 # (list) Application requirements
-requirements = python3==3.11.1, kivy==2.3.1, ffpyplayer==4.3.5, sdl2, sdl2_image, sdl2_mixer, sdl2_ttf
+requirements = python3, kivy==2.3.1, ffpyplayer, sdl2, sdl2_image, sdl2_mixer, sdl2_ttf
 # (str) Supported orientations (landscape é o padrão de TVs)
 orientation = landscape
 p4a.branch = release-2024.01.21
 # (bool) Use fullscreen or not
 fullscreen = 1
+# (int) Target Android Python version
+android.python_version = 3.11
 
 # (list) Permissions
 # ⚠️ CRUCIAL: Permite que o app leia a pasta pública "TotemVideos" da TV-Box
 android.permissions = READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE, MANAGE_EXTERNAL_STORAGE
 
+# (str) python-for-android branch to use
+p4a.branch = release-2024.01.21
 # (int) Target Android API (33 ou 34 atende a grande maioria das TV-Boxes atuais)
 android.api = 34
 # (str) Android NDK version to use
