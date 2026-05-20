@@ -27,5 +27,9 @@ jobs:
 
     - name: Compilar APK
       run: |
-        # Executa o Buildozer puro e direto
-        ~/.local/bin/buildozer -v android debug
+        # Cria a pasta de licenças que o Android SDK exige para não travar o build
+        mkdir -p ~/.android
+        touch ~/.android/repositories.cfg
+        
+        # Roda o Buildozer aceitando os termos automaticamente e mostrando o log detalhado
+        yes | ~/.local/bin/buildozer -v android debug --log_level=2
