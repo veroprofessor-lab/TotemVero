@@ -33,14 +33,18 @@ jobs:
     - name: Compilar APK
       run: |
         export PATH=$PATH:$HOME/.local/bin
+        
+        # Executa o build salvando tudo no log
         buildozer -v android debug > log_erro.txt 2>&1 || true
         
-        echo "=== FIM DO LOG / ERRO REAL ==="
-        tail -n 100 log_erro.txt
+        # Procura e mostra na tela as 50 linhas em torno de onde a palavra "error" ou "failed" apareceu
+        echo "🔍 === CAÇANDO O ERRO NO LOG ==="
+        grep -n -C 10 -i "error" log_erro.txt || true
+        grep -n -C 10 -i "failed" log_erro.txt || true
         
         if grep -q "APK is available" log_erro.txt; then
           echo "APK Criado com sucesso!"
         else
-          echo "Compilacao falhou. Analise as linhas acima."
+          echo "Compilacao falhou. Analise as linhas de erro acima."
           exit 1
         fi
