@@ -39,4 +39,5 @@ jobs:
         buildozer -v android debug > log_erro.txt 2>&1 || true
         echo "🔍 === EXIBINDO ULTIMAS LINHAS DO LOG ==="
         tail -n 250 log_erro.txt || true
-        grep -q "APK is available" log_erro.txt && echo "APK Criado com sucesso!" || (echo "Compilacao falhou." && exit 1)
+        if ! grep -q "APK is available" log_erro.txt; then exit 1; fi
+        echo "APK Criado com sucesso!"
