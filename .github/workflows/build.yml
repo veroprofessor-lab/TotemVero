@@ -35,5 +35,5 @@ jobs:
 
     - name: Compilar APK
       run: |
-        # O parametro --auto-accept-licenses garante que o buildozer nao pare para perguntar nada
-        ~/.local/bin/buildozer -v android debug
+        # Passamos o sim (yes) direto para o comando do buildozer aceitar as licenças do SDK que ele vai baixar
+        yes | ~/.local/bin/buildozer -v android debug
