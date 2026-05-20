@@ -19,11 +19,16 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
-    - name: Compilar APK com Kivy Buildozer Oficial
-      uses: Mobile-Builds-Production/buildozer-action@v2
-      with:
-        command: buildozer -v android debug
-        buildozer_version: stable
+    - name: Instalar Dependencias do Linux e Buildozer
+      run: |
+        sudo apt update
+        sudo apt install -y git zip unzip python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libssl-dev cmake libffi-dev libgomp1
+        pip3 install --user buildozer
+
+    - name: Compilar APK
+      run: |
+        # Executa o buildozer oficial instalado localmente no servidor
+        ~/.local/bin/buildozer -v android debug
 
     - name: Upload do APK Pronto
       uses: actions/upload-artifact@v4
