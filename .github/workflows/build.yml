@@ -7,8 +7,8 @@ on:
 
 jobs:
   build:
-    # Usamos o Ubuntu 20.04 que tem as ferramentas de sistema perfeitas para o Kivy
-    runs-on: ubuntu-20.04
+    # Voltamos para a máquina atual para sair da fila imediatamente
+    runs-on: ubuntu-latest
 
     steps:
     - name: Baixar Codigo do Repositorio
@@ -29,13 +29,16 @@ jobs:
       run: |
         sudo apt update
         sudo apt install -y git zip unzip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libssl-dev cmake libffi-dev libgomp1
-        # Forçamos uma versão do Buildozer que sabemos que funciona perfeitamente com essa estrutura
-        pip3 install --user "buildozer==1.5.0" Cython virtualenv
+        # Instalamos o buildozer e o Cython exigido para compilar código C
+        pip3 install --user buildozer Cython==0.29.36 virtualenv
 
     - name: Compilar APK
       run: |
-        # Adiciona o caminho do Buildozer ao sistema para o Linux encontrar o comando
+        # Força o ambiente do terminal a usar o Python 3.10 que instalamos acima
         export PATH=$PATH:$HOME/.local/bin
         
-        # Roda o Buildozer mostrando linha por linha na tela para não esconder nenhum erro
-        buildozer -v android debug
+        # Cria a pasta de segurança de licenças do Android
+        mkdir -p ~/.android && touch ~/.android/repositories.cfg
+        
+        # Roda o Buildozer aceitando os termos nativamente
+        yes | buildozer -v android debug
