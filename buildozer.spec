@@ -22,7 +22,7 @@ android.python_version = 3.11
 android.permissions = READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE, MANAGE_EXTERNAL_STORAGE
 
 # (str) python-for-android branch to use
-p4a.branch = release-2024.01.21
+
 # (int) Target Android API (33 ou 34 atende a grande maioria das TV-Boxes atuais)
 android.api = 34
 # (str) Android NDK version to use
