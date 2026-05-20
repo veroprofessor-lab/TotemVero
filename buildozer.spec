@@ -7,10 +7,10 @@ package.domain = org.amendoim
 
 # (list) Application requirements
 # ⚠️ CRUCIAL: Adicionar ffpyplayer e os componentes sdl2 necessários para vídeo
-requirements = python3==3.11.1, kivy==2.3.1, ffpyplayer==4.3.5, sdl2, sdl2_image, sdl2_mixer, sdl2_ttf
+requirements = python3, kivy==2.3.1, ffpyplayer, sdl2, sdl2_image, sdl2_mixer, sdl2_ttf
 # (str) Supported orientations (landscape é o padrão de TVs)
 orientation = landscape
-
+p4a.branch = release-2024.01.21
 # (bool) Use fullscreen or not
 fullscreen = 1
 
