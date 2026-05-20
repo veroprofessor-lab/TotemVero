@@ -27,9 +27,5 @@ jobs:
 
     - name: Compilar APK
       run: |
-        # Executa o Buildozer limpando caches antigos para não misturar o Python novo com o velho
-        ~/.local/bin/buildozer android clean
-        ~/.local/bin/buildozer android debug
-        
-        # Roda o Buildozer no modo de compilação direta
-        ~/.local/bin/buildozer android debug
+        # Vai direto para a compilação do APK usando o modo detalhado para vermos tudo
+        ~/.local/bin/buildozer -v android debug
