@@ -30,21 +30,25 @@ jobs:
         sudo apt install -y git zip unzip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libssl-dev cmake libffi-dev libgomp1 gcc g++ make patch lldb libasound2-dev libpulse-dev
         pip3 install --user "buildozer==1.5.0" "Cython==0.29.36" virtualenv
 
-    - name: Compilar APK
+  - name: Compilar APK
       run: |
         export PATH=$PATH:$HOME/.local/bin
+        
+        # 🔥 CRUCIAL: Limpa as variáveis do NDK pré-instalado do GitHub que estão quebrando o ffpyplayer
+        unset ANDROID_NDK
+        unset ANDROID_NDK_HOME
+        unset ANDROID_NDK_ROOT
+        unset ANDROID_NDK_LATEST_HOME
         
         # Executa o build salvando tudo no log
         buildozer -v android debug > log_erro.txt 2>&1 || true
         
-        echo "🔍 === EXIBINDO AS LINHAS ANTERIORES À FALHA ==="
-        # Vamos pegar as 400 linhas anteriores ao aviso de falha do Buildozer
-        # Isso vai nos mostrar exatamente o bloco onde a receita do ffpyplayer ou ffmpeg travou
-        grep -B 400 "Buildozer failed to execute the last command" log_erro.txt || true
+        echo "🔍 === SE FALHAR, AS ÚLTIMAS 250 LINHAS DO COMPILADOR ==="
+        tail -n 250 log_erro.txt || true
         
         if grep -q "APK is available" log_erro.txt; then
           echo "APK Criado com sucesso!"
         else
-          echo "Compilacao falhou. Analise as linhas acima."
+          echo "Compilacao falhou. Verifique o log acima."
           exit 1
         fi
