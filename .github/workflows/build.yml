@@ -29,7 +29,6 @@ jobs:
         sudo apt update
         sudo apt install -y git zip unzip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libssl-dev cmake libffi-dev libgomp1 gcc g++ make patch lldb libasound2-dev libpulse-dev
         pip3 install --user "buildozer==1.5.0" "Cython==0.29.36" virtualenv
-
 - name: Compilar APK
       run: |
         export PATH=$PATH:$HOME/.local/bin
@@ -38,11 +37,6 @@ jobs:
         unset ANDROID_NDK_ROOT
         unset ANDROID_NDK_LATEST_HOME
         buildozer -v android debug > log_erro.txt 2>&1 || true
-        echo "🔍 === SE FALHAR, AS ULTIMAS 250 LINHAS DO COMPILADOR ==="
+        echo "🔍 === EXIBINDO ULTIMAS LINHAS DO LOG ==="
         tail -n 250 log_erro.txt || true
-        if grep -q "APK is available" log_erro.txt; then
-          echo "APK Criado com sucesso!"
-        else
-          echo "Compilacao falhou. Verifique o log acima."
-          exit 1
-        fi
+        grep -q "APK is available" log_erro.txt && echo "APK Criado com sucesso!" || (echo "Compilacao falhou." && exit 1)
