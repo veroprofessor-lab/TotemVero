@@ -37,14 +37,14 @@ jobs:
         # Executa o build salvando tudo no log
         buildozer -v android debug > log_erro.txt 2>&1 || true
         
-        # Procura e mostra na tela as 50 linhas em torno de onde a palavra "error" ou "failed" apareceu
-        echo "🔍 === CAÇANDO O ERRO NO LOG ==="
-        grep -n -C 10 -i "error" log_erro.txt || true
-        grep -n -C 10 -i "failed" log_erro.txt || true
+        echo "🔍 === EXIBINDO AS LINHAS ANTERIORES À FALHA ==="
+        # Vamos pegar as 400 linhas anteriores ao aviso de falha do Buildozer
+        # Isso vai nos mostrar exatamente o bloco onde a receita do ffpyplayer ou ffmpeg travou
+        grep -B 400 "Buildozer failed to execute the last command" log_erro.txt || true
         
         if grep -q "APK is available" log_erro.txt; then
           echo "APK Criado com sucesso!"
         else
-          echo "Compilacao falhou. Analise as linhas de erro acima."
+          echo "Compilacao falhou. Analise as linhas acima."
           exit 1
         fi
