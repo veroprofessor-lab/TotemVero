@@ -1,3 +1,4 @@
+[app]
 # (str) Title of your application
 title = Totem Midia
 
