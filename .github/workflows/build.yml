@@ -27,9 +27,8 @@ jobs:
 
     - name: Compilar APK
       run: |
-        # Cria a pasta de licenças que o Android SDK exige para não travar o build
-        mkdir -p ~/.android
-        touch ~/.android/repositories.cfg
+        # Usamos uma variável de ambiente do próprio Android para aceitar as licenças sem travar o terminal
+        export ANDROID_NDK_HOME=$HOME/.buildozer/android/platform/android-ndk-r26b
         
-        # Roda o Buildozer aceitando os termos automaticamente e mostrando o log detalhado
-        yes | ~/.local/bin/buildozer -v android debug --log_level=2
+        # Roda o Buildozer no modo de compilação direta
+        ~/.local/bin/buildozer android debug
