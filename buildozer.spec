@@ -1,25 +1,8 @@
 [app]
-# (str) Onde estão os arquivos do projeto (o ponto significa "esta pasta")
 source.dir = .
-
-# (str) Versão do seu aplicativo
 version = 1.0
-
-# (str) Title of your application
 title = Totem Midia
-
-# (str) Package name
 package.name = totemmidia
-
-# (str) Package domain (needed for android packaging)
-package.domain = org.amendoim
-# (str) Title of your application
-title = Totem Midia
-
-# (str) Package name
-package.name = totemmidia
-
-# (str) Package domain (needed for android packaging)
 package.domain = org.amendoim
 
 # (list) Application requirements
