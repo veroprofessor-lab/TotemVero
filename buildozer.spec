@@ -27,6 +27,10 @@ android.permissions = READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE, MANAGE_EXTE
 android.api = 34
 # (str) Android NDK version to use
 android.ndk = 26b
+# (list) The Android architectures to build for
+android.archs = arm64-v8a
+# (int) Log level (0 = error only, 1 = info, 2 = debug and big outputs)
+log_level = 2
 
 # (bool) If True, then skip trying to update the Android sdk
 # Useful if you are packaging offline or wish to skip standard updates
