@@ -27,8 +27,9 @@ jobs:
 
     - name: Compilar APK
       run: |
-        # Usamos uma variável de ambiente do próprio Android para aceitar as licenças sem travar o terminal
-        export ANDROID_NDK_HOME=$HOME/.buildozer/android/platform/android-ndk-r26b
+        # Executa o Buildozer limpando caches antigos para não misturar o Python novo com o velho
+        ~/.local/bin/buildozer android clean
+        ~/.local/bin/buildozer android debug
         
         # Roda o Buildozer no modo de compilação direta
         ~/.local/bin/buildozer android debug
