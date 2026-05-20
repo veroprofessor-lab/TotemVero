@@ -30,7 +30,7 @@ jobs:
         sudo apt install -y git zip unzip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libssl-dev cmake libffi-dev libgomp1 gcc g++ make patch lldb libasound2-dev libpulse-dev gperf bison flex libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev
         pip3 install --user "buildozer==1.5.0" "Cython==0.29.36" virtualenv
 
-  - name: Compilar APK
+    - name: Compilar APK
       run: |
         export PATH=$PATH:$HOME/.local/bin
         unset ANDROID_NDK ANDROID_NDK_HOME ANDROID_NDK_ROOT ANDROID_NDK_LATEST_HOME
