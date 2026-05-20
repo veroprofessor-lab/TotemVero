@@ -31,8 +31,20 @@ jobs:
         sudo apt install -y git zip unzip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libssl-dev cmake libffi-dev libgomp1 gcc g++ make patch lldb libasound2-dev libpulse-dev
         pip3 install --user "buildozer==1.5.0" "Cython==0.29.36" virtualenv
 
-    - name: Compilar APK
+   - name: Compilar APK
       run: |
         export PATH=$PATH:$HOME/.local/bin
-        # Roda o build mostrando tudo detalhadamente
-        buildozer -v android debug
+        
+        # Roda o build salvando tudo o que acontece num arquivo chamado log_erro.txt
+        buildozer -v android debug > log_erro.txt 2>&1 || true
+        
+        # Se quebrar, exibe na tela as últimas 100 linhas do erro real para a gente ver
+        echo "=== FIM DO LOG / ERRO REAL ==="
+        tail -n 100 log_erro.txt
+        
+        # Força o GitHub a nos dar o status real se falhar
+        if grep -q "Listing text" log_erro.txt; then
+          echo "APK Criado!"
+        else
+          exit 1
+        fi
