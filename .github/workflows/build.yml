@@ -25,13 +25,15 @@ jobs:
         sudo apt install -y git zip unzip python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libssl-dev cmake libffi-dev libgomp1
         pip3 install --user buildozer
 
+    - name: Aceitar Licencas do Android SDK
+      run: |
+        # Instala as ferramentas de linha de comando do Android para aceitar as licenças automaticamente
+        mkdir -p ~/.android
+        touch ~/.android/repositories.cfg
+        # Força o sim (yes) para todas as perguntas de licença do SDK
+        yes | sdkmanager --licenses || true
+
     - name: Compilar APK
       run: |
-        # Executa o buildozer oficial instalado localmente no servidor
+        # O parametro --auto-accept-licenses garante que o buildozer nao pare para perguntar nada
         ~/.local/bin/buildozer -v android debug
-
-    - name: Upload do APK Pronto
-      uses: actions/upload-artifact@v4
-      with:
-        name: TotemApp-APK
-        path: bin/*.apk
