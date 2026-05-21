@@ -13,23 +13,15 @@ class TotemPlayerWidget(Widget):
     def __init__(self, **kwargs):
         super(TotemPlayerWidget, self).__init__(**kwargs)
         
-        # 📂 GERENCIAMENTO DE PASTAS SEGURO (RAIZ PÚBLICA DO ANDROID)
+        # 📂 GERENCIAMENTO DE PASTAS ULTRA-COMPATÍVEL (PASTA DOWNLOAD)
         if platform == 'android':
             from android.storage import primary_external_storage_path
-            # Pega o caminho real da memória interna (ex: /sdcard ou /storage/emulated/0)
+            # Pega a raiz da memória interna (ex: /storage/emulated/0)
             storage = primary_external_storage_path()
             
-            # Rota 1: Tenta usar a pasta "Movies/TotemVideos" (Pasta padrão de vídeos do Android)
-            self.video_dir = os.path.join(storage, "Movies", "TotemVideos")
-            
-            # Se não conseguir criar ou acessar, usa a pasta Download como Plano B definitivo
-            if not os.path.exists(self.video_dir):
-                try:
-                    os.makedirs(self.video_dir, exist_ok=True)
-                except:
-                    self.video_dir = os.path.join(storage, "Download")
-            
-            print(f"📱 Pasta ativa no Android: {self.video_dir}")
+            # Mira direto na pasta Download padrão do Android, que aceita arquivos soltos facilmente
+            self.video_dir = os.path.join(storage, "Download")
+            print(f"📱 Aplicativo monitorando a pasta: {self.video_dir}")
         else:
             # No Windows, mantém a pasta local para os seus testes no VS Code
             self.video_dir = os.path.join(os.path.dirname(__file__), "videos")
@@ -45,7 +37,7 @@ class TotemPlayerWidget(Widget):
         self.player = None
         self.last_pts = -1  # Evita reprocessar o mesmo frame repetidamente
 
-        # Desenha a moldura discreta do totem (Layout)
+        # Desenha a moldura discreta do totem
         with self.canvas.before:
             Color(0.12, 0.12, 0.12, 1)
             self.border = Line(rectangle=(self.x, self.y, self.width, self.height), width=1.5)
@@ -56,30 +48,31 @@ class TotemPlayerWidget(Widget):
         if self.video_files:
             Clock.schedule_once(self.start_playback, 1.0)
         else:
-            # Se a pasta estiver vazia, checa de 5 em 5 segundos automaticamente
+            # Se a pasta estiver vazia, fica checando de 5 em 5 segundos
             Clock.schedule_interval(self._check_empty_playlist, 5.0)
 
     def _update_border(self, instance, value):
         self.border.rectangle = (self.x, self.y, self.width, self.height)
 
     def _reload_playlist(self):
-        """Lê os arquivos de vídeo da pasta (máximo 20 arquivos .mp4)"""
+        """Lê os arquivos de vídeo diretamente da pasta Download (máximo 20 arquivos)"""
         supported = ('.mp4', '.mkv', '.avi')
         if os.path.exists(self.video_dir):
             try:
+                # Puxa os vídeos soltos que você colar na pasta Download
                 files = [os.path.join(self.video_dir, f) for f in os.listdir(self.video_dir) if f.lower().endswith(supported)]
                 self.video_files = sorted(files)[:20]
-                print(f"🎶 Playlist carregada: {len(self.video_files)} vídeos.")
+                print(f"🎶 Vídeos encontrados na pasta Download: {len(self.video_files)}")
             except Exception as e:
-                print(f"❌ Erro ao ler arquivos da pasta: {e}")
+                print(f"❌ Erro ao ler arquivos: {e}")
                 self.video_files = []
 
     def _check_empty_playlist(self, dt):
-        """Tenta iniciar o player assim que os vídeos forem detectados"""
+        """Inicia o player assim que o usuário colar os vídeos na pasta Download"""
         self._reload_playlist()
         if self.video_files:
             self.start_playback(0)
-            return False  # Cancela este timer de checagem interna
+            return False  # Para o timer de checagem
         return True
 
     def start_playback(self, dt):
