@@ -9,7 +9,7 @@ package.domain = org.amendoim
 # ⚠️ CRUCIAL: Adicionar ffpyplayer e os componentes sdl2 necessários para vídeo
 # (list) Application requirements
 # (list) Application requirements
-requirements = python3, kivy, ffmpeg, ffpyplayer, sdl2, sdl2_image, sdl2_mixer, sdl2_ttf
+requirements = python3, kivy, ffmpeg, ffpyplayer, sdl2, sdl2_image, sdl2_mixer, sdl2_ttf, android
 # (str) Supported orientations (landscape é o padrão de TVs)
 orientation = landscape
 p4a.branch = release-2024.01.21
@@ -25,7 +25,7 @@ android.permissions = READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE, MANAGE_EXTE
 # (str) python-for-android branch to use
 
 # (int) Target Android API (33 ou 34 atende a grande maioria das TV-Boxes atuais)
-android.api = 34
+android.api = 29
 # (str) Android NDK version to use
 android.ndk = 25c
 # (list) The Android architectures to build for
