@@ -29,7 +29,7 @@ android.api = 34
 # (str) Android NDK version to use
 android.ndk = 25c
 # (list) The Android architectures to build for
-android.archs = arm64-v8a
+android.archs = armeabi-v7a, arm64-v8a
 # (int) Log level (0 = error only, 1 = info, 2 = debug and big outputs)
 log_level = 2
 
