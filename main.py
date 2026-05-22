@@ -1,47 +1,59 @@
 import os
 from kivy.app import App
-from kivy.uix.video import Video
-from kivy.clock import Clock
+from kivy.uix.boxlayout import BoxLayout
 from kivy.utils import platform
+from kivy.clock import Clock
+
+class TotemWebWidget(BoxLayout):
+    def __init__(self, **kwargs):
+        super(TotemWebWidget, self).__init__(**kwargs)
+        
+        # Link do vídeo ou da página do seu totem que vai rodar em loop
+        # Para testar agora, usei um link de vídeo direto de alta velocidade
+        self.video_url = "https://static.videezy.com/system/resources/previews/000/045/486/original/water-01.mp4"
+        
+        if platform == 'android':
+            # Chama o navegador nativo do Android para rodar o vídeo dentro do app
+            from android.runnable import run_on_ui_thread
+            Clock.schedule_once(self.init_android_webview, 1.0)
+        else:
+            print(f"💻 Ambiente de testes no Windows. Abrindo link: {self.video_url}")
+
+    @run_on_ui_thread
+    def init_android_webview(self, dt):
+        """Inicializa o WebView do Android usando o motor do Chrome nativo da TV Box"""
+        try:
+            from jnius import autoclass
+            
+            # Puxa as ferramentas nativas do sistema Android
+            PythonActivity = autoclass('org.kivy.android.PythonActivity')
+            WebView = autoclass('android.webkit.WebView')
+            WebViewClient = autoclass('android.webkit.WebViewClient')
+            WebSettings = autoclass('android.webkit.WebSettings')
+            
+            activity = PythonActivity.mActivity
+            webview = WebView(activity)
+            
+            # Configura o navegador interno para rodar vídeos em tela cheia e dar autoplay
+            settings = webview.getSettings()
+            settings.setJavaScriptEnabled(True)
+            settings.setMediaPlaybackRequiresUserGesture(False) # Permite dar Play automático!
+            settings.setDomStorageEnabled(True)
+            
+            webview.setWebViewClient(WebViewClient())
+            
+            # Adiciona o navegador ocupando a tela inteira da TV Box
+            activity.setContentView(webview)
+            
+            # Carrega o vídeo direto
+            webview.loadUrl(self.video_url)
+            print("🚀 WebView Nativo iniciado com sucesso!")
+        except Exception as e:
+            print(f"❌ Erro ao iniciar o WebView: {e}")
 
 class TotemMidiaApp(App):
     def build(self):
-        # 🔗 PLAYLIST DE VÍDEOS NA INTERNET ULTRA-RÁPIDA
-        # O primeiro link é um exemplo leve e público para testarmos agora.
-        self.playlist = [
-            "https://static.videezy.com/system/resources/previews/000/045/486/original/water-01.mp4",
-            "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
-        ]
-        
-        self.current_index = 0
-        
-        # Usamos o componente 'Video' puro: SEM BOTÕES, SEM LINHA DE TEMPO. Tela 100% limpa!
-        self.player = Video(
-            source=self.playlist[self.current_index],
-            state='play',
-            options={'allow_stretch': True, 'eos': 'loop'}
-        )
-        
-        # Força o vídeo a ocupar a TV inteira sem bordas pretas nas laterais
-        self.player.allow_stretch = True
-        
-        # Carrossel de tempo: muda de vídeo a cada 15 segundos de forma perpétua
-        Clock.schedule_interval(self.next_video, 15.0)
-        
-        return self.player
-
-    def next_video(self, dt):
-        if not self.playlist:
-            return
-            
-        # Avança para o próximo link da lista de forma infinita
-        self.current_index = (self.current_index + 1) % len(self.playlist)
-        
-        # Troca a fonte e força o play instantâneo
-        self.player.unload()  # Limpa o vídeo anterior da memória da TV-Box
-        self.player.source = self.playlist[self.current_index]
-        self.player.state = 'play'
-        print(f"🌐 Totem mudando para o vídeo: {self.player.source}")
+        return TotemWebWidget()
 
 if __name__ == '__main__':
     TotemMidiaApp().run()
