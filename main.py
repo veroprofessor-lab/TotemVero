@@ -1,33 +1,31 @@
 import os
 from kivy.app import App
-from kivy.uix.videoplayer import VideoPlayer
+from kivy.uix.video import Video
 from kivy.clock import Clock
 from kivy.utils import platform
 
-class TotemApp(App):
+class TotemMidiaApp(App):
     def build(self):
-        # 🔗 PLAYLIST DE VÍDEOS NA INTERNET
-        # Substitua os links abaixo pelos links dos seus vídeos!
-        # Dica: Se usar o Dropbox, mude o final do link de 'dl=0' para 'raw=1'
+        # 🔗 PLAYLIST DE VÍDEOS NA INTERNET ULTRA-RÁPIDA
+        # O primeiro link é um exemplo leve e público para testarmos agora.
         self.playlist = [
-            "https://libs.html5video.org/video/mp4/movies/transcode/360p/big_buck_bunny.mp4",
-            "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-            "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
+            "https://static.videezy.com/system/resources/previews/000/045/486/original/water-01.mp4",
+            "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
         ]
         
         self.current_index = 0
         
-        # Cria o player de vídeo do Kivy ocupando a tela inteira
-        self.player = VideoPlayer(
+        # Usamos o componente 'Video' puro: SEM BOTÕES, SEM LINHA DE TEMPO. Tela 100% limpa!
+        self.player = Video(
             source=self.playlist[self.current_index],
             state='play',
             options={'allow_stretch': True, 'eos': 'loop'}
         )
         
-        # Oculta os botões de controle do player (pausa, barra de tempo) para ficar estético no totem
-        self.player.allow_fullscreen = True
+        # Força o vídeo a ocupar a TV inteira sem bordas pretas nas laterais
+        self.player.allow_stretch = True
         
-        # Configura o carrossel: muda de vídeo a cada 15 segundos de forma perpétua
+        # Carrossel de tempo: muda de vídeo a cada 15 segundos de forma perpétua
         Clock.schedule_interval(self.next_video, 15.0)
         
         return self.player
@@ -36,14 +34,15 @@ class TotemApp(App):
         if not self.playlist:
             return
             
-        # Avança para o próximo link da lista
+        # Avança para o próximo link da lista de forma infinita
         self.current_index = (self.current_index + 1) % len(self.playlist)
         
-        # Atualiza a fonte do player e força a reprodução imediata
+        # Troca a fonte e força o play instantâneo
+        self.player.unload()  # Limpa o vídeo anterior da memória da TV-Box
         self.player.source = self.playlist[self.current_index]
         self.player.state = 'play'
-        print(f"🌐 Reproduzindo vídeo da web: {self.player.source}")
+        print(f"🌐 Totem mudando para o vídeo: {self.player.source}")
 
 if __name__ == '__main__':
-    TotemApp().run()
+    TotemMidiaApp().run()
 
