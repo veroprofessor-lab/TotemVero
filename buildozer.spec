@@ -20,7 +20,7 @@ android.python_version = 3.11
 
 # (list) Permissions
 # ⚠️ CRUCIAL: Permite que o app leia a pasta pública "TotemVideos" da TV-Box
-android.permissions = READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE, MANAGE_EXTERNAL_STORAGE
+android.permissions = INTERNET, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE
 
 # (str) python-for-android branch to use
 
