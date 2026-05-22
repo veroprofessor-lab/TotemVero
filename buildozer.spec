@@ -9,7 +9,7 @@ package.domain = org.amendoim
 # ⚠️ CRUCIAL: Adicionar ffpyplayer e os componentes sdl2 necessários para vídeo
 # (list) Application requirements
 # (list) Application requirements
-requirements = python3, kivy, ffmpeg, ffpyplayer, sdl2, sdl2_image, sdl2_mixer, sdl2_ttf, android
+requirements = python3, kivy,sdl2, sdl2_image, sdl2_mixer, sdl2_ttf, android
 # (str) Supported orientations (landscape é o padrão de TVs)
 orientation = landscape
 p4a.branch = release-2024.01.21
